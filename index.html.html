@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayşe | Gelişim Paneli</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="user-profile">
+                <div class="avatar">A</div>
+                <div class="profile-info">
+                    <h3>Ayşe</h3>
+                    <span>Gelişim Paneli</span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li class="menu-item active" onclick="switchTab('kpss', this)">📚 KPSS</li>
+                <li class="menu-item" onclick="switchTab('aliskanlik', this)">💧 Su & Spor</li>
+                <li class="menu-item" onclick="switchTab('borsa', this)">📈 Borsa</li>
+                <li class="menu-item" onclick="switchTab('bakim', this)">✨ Cilt Bakımı</li>
+                <li class="menu-item" onclick="switchTab('gecmis', this)" style="border-top: 1px solid var(--glass-border); margin-top: 10px; color: var(--accent-blue);">📜 Geçmiş</li>
+            </ul>
+            <div class="calendar-card">
+                <label>Geçmişe Git</label>
+                <input type="date" id="nav-date" onchange="loadData()">
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section id="kpss" class="tab-content active">
+                <header class="section-header"><h2>📚 KPSS Eğitim Serüveni</h2></header>
+                <div class="ders-filtre" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button class="filter-btn active" onclick="showTable('tarih', this)">Tarih (47)</button>
+                    <button class="filter-btn" onclick="showTable('matematik', this)">Matematik (108)</button>
+                    <button class="filter-btn" onclick="showTable('turkce', this)">Türkçe (90)</button>
+                    <button class="filter-btn" onclick="showTable('cografya', this)">Coğrafya (37)</button>
+                    <button class="filter-btn" onclick="showTable('vatandaslik', this)">Vatandaşlık (38)</button>
+                </div>
+                <div class="progress-section card">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span id="progress-ders-adi" style="font-weight: 600; color: var(--accent-blue);">Tarih İlerlemesi</span>
+                        <span id="progress-yuzde" style="font-weight: bold;">%0</span>
+                    </div>
+                    <div class="progress-bar-bg" style="width: 100%; height: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;">
+                        <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-indigo)); transition: 0.5s;"></div>
+                    </div>
+                    <p id="progress-stat" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">0 / 47 Video</p>
+                </div>
+                <div class="tables-container card" style="padding: 0; overflow: hidden; margin-bottom: 30px;">
+                    <div id="kpss-table-wrapper" style="max-height: 450px; overflow-y: auto;">
+                        <table class="kpss-table">
+                            <thead><tr><th width="50">No</th><th width="40">Durum</th><th>Video Adı</th><th width="100">Süre</th></tr></thead>
+                            <tbody id="kpss-list-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="grid-layout">
+                    <div class="card form-card">
+                        <h3>📖 Paragraf Takibi</h3>
+                        <div class="input-grid">
+                            <div class="input-group"><label>Soru</label><input type="number" id="p-soru"></div>
+                            <div class="input-group"><label>Doğru</label><input type="number" id="p-dogru"></div>
+                            <div class="input-group"><label>Yanlış</label><input type="number" id="p-yanlis"></div>
+                            <div class="input-group"><label>Süre</label><input type="number" id="p-sure"></div>
+                        </div>
+                        <textarea id="p-not" placeholder="Notlar..."></textarea>
+                        <button class="save-btn primary" onclick="saveKpss()">Kaydet</button>
+                    </div>
+                    <div class="card form-card">
+                        <h3>📊 Deneme Analizi</h3>
+                        <div class="input-grid">
+                            <div class="input-group"><label>Doğru</label><input type="number" id="d-dogru"></div>
+                            <div class="input-group"><label>Yanlış</label><input type="number" id="d-yanlis"></div>
+                        </div>
+                        <textarea id="d-not" placeholder="Eksik konular..."></textarea>
+                        <button class="save-btn secondary" onclick="saveDeneme()">Kaydet</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gecmis" class="tab-content">
+                <header class="section-header"><h2>📜 Veri Kayıt Geçmişi</h2></header>
+                <div class="card professional-card" style="padding: 0; overflow: hidden;">
+                    <table class="kpss-table professional-grid" id="data-grid-view">
+                        <thead>
+                            <tr>
+                                <th width="120">TARİH</th>
+                                <th width="110">SU / SPOR</th>
+                                <th>PARAGRAF (S/D/Y)</th>
+                                <th>DENEME (D/Y)</th>
+                                <th>NOTLAR</th>
+                                <th width="100">GÖRSEL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="log-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="aliskanlik" class="tab-content">
+                <header class="section-header"><h2>💧 Su & Spor</h2></header>
+                <div class="grid-layout">
+                    <div class="card water-card">
+                        <h3>Günlük Su</h3>
+                        <div id="water-cups" class="cups-container"></div>
+                        <p id="water-status">0 / 10</p>
+                    </div>
+                    <div class="card sport-card">
+                        <h3>Spor</h3>
+                        <label class="check-container wide"><input type="checkbox" id="check-spor"><span class="checkmark"></span> Bugün Spor Yapıldı</label>
+                        <button class="save-btn primary" onclick="saveHabits()">Durumu Kaydet</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="borsa" class="tab-content">
+                <header class="section-header"><h2>📈 Borsa</h2></header>
+                <div class="card full-width"><textarea id="daily-notes" rows="15" placeholder="Notların..."></textarea><button class="save-btn secondary" onclick="saveBorsa()">Analizi Kaydet</button></div>
+            </section>
+
+            <section id="bakim" class="tab-content">
+                <header class="section-header"><h2>✨ Cilt Bakımı</h2></header>
+                <div class="card bakim-card">
+                    <div class="upload-zone"><input type="file" id="bakim-foto-input" accept="image/*" onchange="onImageSelect(event)"><div class="preview-container"><img id="bakim-img-preview" src=""></div></div>
+                    <textarea id="bakim-not" placeholder="Rutin..."></textarea>
+                    <button class="save-btn primary" onclick="saveBakim()">Bakımı Kaydet</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="imageModal" class="modal" onclick="this.style.display='none'">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="imgFull">
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
